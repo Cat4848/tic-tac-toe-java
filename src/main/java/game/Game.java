@@ -8,8 +8,7 @@ public class Game {
   char[][] board;
   int count = 0;
   Scanner reader = new Scanner(System.in);
-  String player1;
-  String player2;
+  String[] players;
 
   public Game(int size) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
@@ -25,9 +24,10 @@ public class Game {
 
   void play() {
     setPlayersNames();
-    
+
     while(count < 10) {
       renderBoard();
+      System.out.println("It")
 
     }
 
@@ -40,12 +40,10 @@ public class Game {
   }
 
   void setPlayersNames() {
-    String[] names = getPlayerNames();
-    this.player1 = names[0];
-    this.player2 = names[1];
+    this.players = getPlayersNames();
   }
 
-  String[] getPlayerNames() {
+  String[] getPlayersNames() {
     System.out.println("Name of Player 1:");
     String p1Name = reader.nextLine();
     System.out.println("Name of Player 2:");
