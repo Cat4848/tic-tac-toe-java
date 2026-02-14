@@ -27,7 +27,6 @@ public class Game {
 
     while(count < 10) {
       renderBoard();
-      System.out.println("It")
 
     }
 
@@ -51,8 +50,17 @@ public class Game {
     return new String[]{p1Name, p2Name};
   }
 
-  String getPlayerInput() {
-
+  int[] getPlayerNextMoveInput() {
+    if (count < 2) {
+      System.out.println("Enter next move like this: 1,2. For first row and  second column.");
+    }
+    System.out.println("It's " + players[count % 2] + "'s turn...");
+    // TODO validate the input to match x,y style
+    String input = reader.nextLine();
+    String[] coordinates = input.split(",");
+    int row = Integer.parseInt(coordinates[0]);
+    int col = Integer.parseInt(coordinates[1]);
+    return new int[]{row, col};
   }
 
 }
