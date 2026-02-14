@@ -1,7 +1,6 @@
-package tictactoe.game;
+package game;
 
 public class Main {
   static void main(String[] args) {
-
   }
 }
