@@ -21,8 +21,8 @@ public class Game {
   }
 
   void renderBoard() {
-    for(int i = 0; i < size; i++) {
-      System.out.println("board item " + Arrays.toString(board[i]));
+    for(char[] row: board) {
+      System.out.println("board item " + Arrays.toString(row));
     }
   }
 }
