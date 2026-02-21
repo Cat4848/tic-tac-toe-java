@@ -6,13 +6,11 @@ import UserInput.IUserInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
   final int size;
   final char[][] board;
   private int count = 0;
-  final Scanner reader = new Scanner(System.in);
   private String[] playersNames;
   // TODO add a back command to the cli to go back one step like time travel
   private List<int[]> moves = new ArrayList<int[]>();
