@@ -2,6 +2,7 @@ package game;
 
 import BoardRenderer.IBoardRenderer;
 import UserInput.IUserInput;
+import Logger.ILogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +19,9 @@ public class Game {
 
   IBoardRenderer boardRenderer;
   IUserInput userInput;
+  ILogger logger;
 
-  public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput) {
+  public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput, ILogger logger) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
     if (size < 3) {
       throw new Error("The board size must an integer number greater or equal to 3");
@@ -31,6 +33,7 @@ public class Game {
     }
     this.boardRenderer = boardRenderer;
     this.userInput = userInput;
+    this.logger = logger;
   }
 
   void play() {
@@ -44,7 +47,7 @@ public class Game {
       boardRenderer.render(board);
       isWinner = isWinner();
       if (isWinner) {
-        System.out.println("We have a winner: " + playersNames[count % 2]);
+        logger.logMessage("We have a winner: " + playersNames[count % 2]);
       }
       count++;
     }
@@ -57,9 +60,9 @@ public class Game {
   void setPlayerMove() {
     // TODO unable to set an already set cell
     if (count < 2) {
-      System.out.println("Enter next move like this: 1,2. For first row and second column.");
+      logger.logMessage("Enter next move like this: 1,2. For first row and second column.");
     }
-    System.out.println("It's " + playersNames[count % 2] + "'s turn...");
+    logger.logMessage("It's " + playersNames[count % 2] + "'s turn...");
     int[] currMove = userInput.getPlayerMove();
     moves.add(currMove);
     board[currMove[0] - 1][currMove[1] - 1] = count % 2 == 0 ? 'X' : 'O';
