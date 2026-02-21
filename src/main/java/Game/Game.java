@@ -1,4 +1,4 @@
-package game;
+package Game;
 
 import BoardRenderer.IBoardRenderer;
 import UserInput.IUserInput;
