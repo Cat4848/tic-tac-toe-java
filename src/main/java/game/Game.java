@@ -3,6 +3,7 @@ package game;
 import BoardRenderer.IBoardRenderer;
 import UserInput.IUserInput;
 import Logger.ILogger;
+import BoardWinValidator.BoardWinValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +21,9 @@ public class Game {
   final IBoardRenderer boardRenderer;
   final IUserInput userInput;
   final ILogger logger;
+  final BoardWinValidator boardWinValidator;
 
-  public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput, ILogger logger) {
+  public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput, ILogger logger, BoardWinValidator boardWinValidator) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
     if (size < 3) {
       throw new Error("The board size must an integer number greater or equal to 3");
@@ -34,6 +36,7 @@ public class Game {
     this.boardRenderer = boardRenderer;
     this.userInput = userInput;
     this.logger = logger;
+    this.boardWinValidator = boardWinValidator;
   }
 
   void play() {
@@ -74,74 +77,10 @@ public class Game {
   }
 
   boolean isWinner() {
-    boolean onRows = isWinnerOnRows();
-    boolean onCol = isWinnerOnCol();
-    boolean onDiag1 = isWinnerOnDiagonalLeftToRight();
-    boolean onDiag2 = isWinnerOnDiagonalRightToLeft();
+    boolean onRows = boardWinValidator.isWinnerOnRows(board);
+    boolean onCol = boardWinValidator.isWinnerOnCol(board);
+    boolean onDiag1 = boardWinValidator.isWinnerOnDiagonalLeftToRight(board);
+    boolean onDiag2 = boardWinValidator.isWinnerOnDiagonalRightToLeft(board);
     return onRows || onCol || onDiag1 || onDiag2;
-  }
-
-  boolean isWinnerOnRows() {
-    boolean[] res = new boolean[size];
-    for (int i = 0; i < size; i++) {
-      int first = board[i][0];
-      boolean isWinnerRow = true;
-      for (int j = 1; j < size; j++) {
-        if (first != board[i][j] || (first == '_' && board[i][j] == '_')) {
-          isWinnerRow = false;
-          break;
-        }
-      }
-      res[i] = isWinnerRow;
-    }
-    for (int i = 0; i < size; i++) {
-      if (res[i]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  boolean isWinnerOnCol() {
-    boolean[] res = new boolean[size];
-    for (int i = 0; i < size; i++) {
-      boolean isWinnerCol = true;
-      int first = board[0][i];
-      for (int j = 1; j < size; j++) {
-        if (first != board[j][i] || (first == '_' && board[j][i] == '_')) {
-          isWinnerCol = false;
-          break;
-        }
-      }
-      res[i] = isWinnerCol;
-    }
-    for (int i = 0; i < size; i++) {
-      if (res[i]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  boolean isWinnerOnDiagonalLeftToRight() {
-    int first = board[0][0];
-    for (int i = 1; i < size; i++) {
-      if (first != board[i][i] || (first == '_' && board[i][i] == '_')) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  boolean isWinnerOnDiagonalRightToLeft() {
-    int first = board[0][size - 1];
-    int j = size - 2;
-    for (int i = 1; i < size; i++) {
-      if (first != board[i][j] || (first == '_' && board[i][j] == '_')) {
-        return false;
-      }
-      j--;
-    }
-    return true;
   }
 }
