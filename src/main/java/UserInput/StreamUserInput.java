@@ -1,23 +1,23 @@
 package UserInput;
 
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Scanner;
+import Logger.ILogger;
 
 public class StreamUserInput implements IUserInput {
   final Scanner reader;
-  final PrintStream out;
+  final ILogger logger;
 
-  public StreamUserInput(InputStream in, PrintStream out) {
+  public StreamUserInput(InputStream in, ILogger logger) {
     this.reader = new Scanner(in);
-    this.out = out;
+    this.logger = logger;
   }
 
   public String[] getPlayersName() {
     // TODO validate player's name. Can't be empty string
-    out.println("Name of Player 1:");
+    logger.logMessage("Name of Player 1:");
     String p1Name = reader.nextLine();
-    out.println("Name of Player 2:");
+    logger.logMessage("Name of Player 2:");
     String p2Name = reader.nextLine();
     return new String[]{p1Name, p2Name};
   }
