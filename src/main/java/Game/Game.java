@@ -71,11 +71,6 @@ public class Game {
     board[currMove[0] - 1][currMove[1] - 1] = count % 2 == 0 ? 'X' : 'O';
   }
 
-  void clearConsole() {
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
-  }
-
   boolean isWinner() {
     boolean onRows = boardWinValidator.isWinnerOnRows(board);
     boolean onCol = boardWinValidator.isWinnerOnCol(board);
