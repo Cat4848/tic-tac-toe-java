@@ -1,6 +1,7 @@
 package game;
 
 import BoardRenderer.IBoardRenderer;
+import UserInput.IUserInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +19,9 @@ public class Game {
   private boolean isWinner = false;
 
   IBoardRenderer boardRenderer;
+  IUserInput userInput;
 
-  public Game(int size, IBoardRenderer boardRenderer) {
+  public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
     if(size < 3) {
       throw new Error("The board size must an integer number greater or equal to 3");
@@ -30,6 +32,7 @@ public class Game {
       Arrays.fill(row, '_');
     }
     this.boardRenderer = boardRenderer;
+    this.userInput = userInput;
   }
 
   void play() {
@@ -39,7 +42,6 @@ public class Game {
       if(count < 1) {
         boardRenderer.render(board);
       }
-      getPlayerMove();
       setPlayerMove();
       boardRenderer.render(board);
       isWinner = isWinner();
@@ -48,38 +50,20 @@ public class Game {
       }
       count++;
     }
-
   }
 
   void setPlayersNames() {
-    this.playersNames = getPlayersNames();
-  }
-
-  String[] getPlayersNames() {
-    // TODO validate player's name. Can't be empty string
-    System.out.println("Name of Player 1:");
-    String p1Name = reader.nextLine();
-    System.out.println("Name of Player 2:");
-    String p2Name = reader.nextLine();
-    return new String[]{p1Name, p2Name};
-  }
-
-  void getPlayerMove() {
-    if (count < 2) {
-      System.out.println("Enter next move like this: 1,2. For first row and second column.");
-    }
-    System.out.println("It's " + playersNames[count % 2] + "'s turn...");
-    // TODO validate the input to match x,y style, no greater than the board size
-    String input = reader.nextLine();
-    String[] coordinates = input.split(",");
-    int row = Integer.parseInt(coordinates[0]);
-    int col = Integer.parseInt(coordinates[1]);
-    moves.add(new int[]{row, col});
+    this.playersNames = userInput.getPlayersName();
   }
 
   void setPlayerMove() {
     // TODO unable to set an already set cell
-    int[] currMove = moves.getLast();
+    if (count < 2) {
+      System.out.println("Enter next move like this: 1,2. For first row and second column.");
+    }
+    System.out.println("It's " + playersNames[count % 2] + "'s turn...");
+    int[] currMove = userInput.getPlayerMove();
+    moves.add(currMove);
     board[currMove[0] - 1][currMove[1] - 1] = count % 2 == 0 ? 'X' : 'O';
   }
 
