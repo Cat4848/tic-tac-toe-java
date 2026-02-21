@@ -102,16 +102,24 @@ public class Game {
   }
 
   boolean isWinnerOnCol() {
+    boolean[] res = new boolean[size];
     for (int i = 0; i < size; i++) {
+      boolean isWinnerCol = true;
       int first = board[0][i];
       for (int j = 1; j < size; j++) {
         if (first != board[j][i] || (first == '_' && board[j][i] == '_')) {
-          return false;
+          isWinnerCol = false;
+          break;
         }
       }
-      return true;
+      res[i] = isWinnerCol;
     }
-    return true;
+    for (int i = 0; i < size; i++) {
+      if (res[i]) {
+        return true;
+      }
+    }
+    return false;
   }
 
   boolean isWinnerOnDiagonalLeftToRight() {
