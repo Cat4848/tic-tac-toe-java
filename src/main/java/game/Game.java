@@ -1,5 +1,7 @@
 package game;
 
+import BoardRenderer.IBoardRenderer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +17,9 @@ public class Game {
   private List<int[]> moves = new ArrayList<int[]>();
   private boolean isWinner = false;
 
-  public Game(int size) {
+  IBoardRenderer boardRenderer;
+
+  public Game(int size, IBoardRenderer boardRenderer) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
     if(size < 3) {
       throw new Error("The board size must an integer number greater or equal to 3");
@@ -25,6 +29,7 @@ public class Game {
     for(char[] row: board){
       Arrays.fill(row, '_');
     }
+    this.boardRenderer = boardRenderer;
   }
 
   void play() {
@@ -32,11 +37,11 @@ public class Game {
 
     while(!isWinner) {
       if(count < 1) {
-        renderBoard();
+        boardRenderer.render(board);
       }
       getPlayerMove();
       setPlayerMove();
-      renderBoard();
+      boardRenderer.render(board);
       isWinner = isWinner();
       if(isWinner) {
         System.out.println("We have a winner: " + playersNames[count % 2]);
@@ -44,12 +49,6 @@ public class Game {
       count++;
     }
 
-  }
-
-  void renderBoard() {
-    for(char[] row: board) {
-      System.out.println("board item " + Arrays.toString(row));
-    }
   }
 
   void setPlayersNames() {
