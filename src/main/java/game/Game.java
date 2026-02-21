@@ -23,12 +23,12 @@ public class Game {
 
   public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
-    if(size < 3) {
+    if (size < 3) {
       throw new Error("The board size must an integer number greater or equal to 3");
     }
     this.size = size;
     this.board = new char[size][size];
-    for(char[] row: board){
+    for (char[] row : board) {
       Arrays.fill(row, '_');
     }
     this.boardRenderer = boardRenderer;
@@ -38,14 +38,14 @@ public class Game {
   void play() {
     setPlayersNames();
 
-    while(!isWinner) {
-      if(count < 1) {
+    while (!isWinner) {
+      if (count < 1) {
         boardRenderer.render(board);
       }
       setPlayerMove();
       boardRenderer.render(board);
       isWinner = isWinner();
-      if(isWinner) {
+      if (isWinner) {
         System.out.println("We have a winner: " + playersNames[count % 2]);
       }
       count++;
@@ -81,23 +81,31 @@ public class Game {
   }
 
   boolean isWinnerOnRows() {
-    for(char[] row: board) {
-      int first = row[0];
-      for(int i = 1; i < size; i++) {
-        if(first != row[i] || (first == '_' && row[i] == '_')) {
-          return false;
+    boolean[] res = new boolean[size];
+    for (int i = 0; i < size; i++) {
+      int first = board[i][0];
+      boolean isWinnerRow = true;
+      for (int j = 1; j < size; j++) {
+        if (first != board[i][j] || (first == '_' && board[i][j] == '_')) {
+          isWinnerRow = false;
+          break;
         }
       }
-      return true;
+      res[i] = isWinnerRow;
     }
-    return true;
+    for (int i = 0; i < size; i++) {
+      if (res[i]) {
+        return true;
+      }
+    }
+    return false;
   }
 
   boolean isWinnerOnCol() {
-    for(int i = 0; i < size; i++) {
-      int first =  board[0][i];
-      for(int j = 1; j < size; j++) {
-        if(first != board[j][i] || (first == '_' && board[j][i] == '_')) {
+    for (int i = 0; i < size; i++) {
+      int first = board[0][i];
+      for (int j = 1; j < size; j++) {
+        if (first != board[j][i] || (first == '_' && board[j][i] == '_')) {
           return false;
         }
       }
@@ -108,8 +116,8 @@ public class Game {
 
   boolean isWinnerOnDiagonalLeftToRight() {
     int first = board[0][0];
-    for(int i = 1; i < size; i++) {
-      if(first != board[i][i] || (first == '_' && board[i][i] == '_')) {
+    for (int i = 1; i < size; i++) {
+      if (first != board[i][i] || (first == '_' && board[i][i] == '_')) {
         return false;
       }
     }
@@ -119,8 +127,8 @@ public class Game {
   boolean isWinnerOnDiagonalRightToLeft() {
     int first = board[0][size - 1];
     int j = size - 2;
-    for(int i = 1; i < size; i++) {
-      if(first != board[i][j] || (first == '_' && board[i][j] == '_')) {
+    for (int i = 1; i < size; i++) {
+      if (first != board[i][j] || (first == '_' && board[i][j] == '_')) {
         return false;
       }
       j--;
