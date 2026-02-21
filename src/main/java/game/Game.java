@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Game {
-  int size;
-  char[][] board;
-  int count = 0;
-  Scanner reader = new Scanner(System.in);
-  String[] playersNames;
-  List<int[]> moves = new ArrayList<int[]>();
+  final int size;
+  final char[][] board;
+  private int count = 0;
+  final Scanner reader = new Scanner(System.in);
+  private String[] playersNames;
+  // TODO add a back command to the cli to go back one step like time travel
+  private List<int[]> moves = new ArrayList<int[]>();
+  private boolean isWinner = false;
 
   public Game(int size) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
@@ -28,13 +30,17 @@ public class Game {
   void play() {
     setPlayersNames();
 
-    while(count < 20) {
+    while(!isWinner) {
       if(count < 1) {
         renderBoard();
       }
       getPlayerMove();
       setPlayerMove();
       renderBoard();
+      isWinner = isWinner();
+      if(isWinner) {
+        System.out.println("We have a winner: " + playersNames[count % 2]);
+      }
       count++;
     }
 
@@ -83,4 +89,58 @@ public class Game {
     System.out.flush();
   }
 
+  boolean isWinner() {
+    boolean onRows = isWinnerOnRows();
+    boolean onCol = isWinnerOnCol();
+    boolean onDiag1 = isWinnerOnDiagonalLeftToRight();
+    boolean onDiag2 = isWinnerOnDiagonalRightToLeft();
+    return onRows || onCol || onDiag1 || onDiag2;
+  }
+
+  boolean isWinnerOnRows() {
+    for(char[] row: board) {
+      int first = row[0];
+      for(int i = 1; i < size; i++) {
+        if(first != row[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return true;
+  }
+
+  boolean isWinnerOnCol() {
+    for(int i = 0; i < size; i++) {
+      int first =  board[0][i];
+      for(int j = 1; j < size; j++) {
+        if(first != board[j][i]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  boolean isWinnerOnDiagonalLeftToRight() {
+    int first = board[0][0];
+    for(int i = 1; i < size; i++) {
+      if(first != board[i][i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  boolean isWinnerOnDiagonalRightToLeft() {
+    int first = board[0][0];
+    for(int i = 0; i < size; i++) {
+      for(int j = size - 1; j >= 0; j--) {
+        if(first != board[i][i]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }
