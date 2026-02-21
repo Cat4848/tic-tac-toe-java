@@ -17,9 +17,9 @@ public class Game {
   private List<int[]> moves = new ArrayList<int[]>();
   private boolean isWinner = false;
 
-  IBoardRenderer boardRenderer;
-  IUserInput userInput;
-  ILogger logger;
+  final IBoardRenderer boardRenderer;
+  final IUserInput userInput;
+  final ILogger logger;
 
   public Game(int size, IBoardRenderer boardRenderer, IUserInput userInput, ILogger logger) {
     // TODO build a domain type to represent the size as an integer greater or equal to 3
