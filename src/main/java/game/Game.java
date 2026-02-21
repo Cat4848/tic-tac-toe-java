@@ -118,6 +118,7 @@ public class Game {
           return false;
         }
       }
+      return true;
     }
     return true;
   }
