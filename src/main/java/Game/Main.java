@@ -1,7 +1,8 @@
 package Game;
 
 import BoardRenderer.*;
-import UserInput.*;
+import UserInput.IUserInput;
+import UserInput.StreamUserInput;
 import Logger.*;
 import BoardWinValidator.BoardWinValidator;
 
