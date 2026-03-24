@@ -10,6 +10,9 @@ public class PlayerInputValidator {
   }
 
   public String validatePlayerName(String name) throws InvalidPlayerNameException {
+    if (name == null) {
+      throw new InvalidPlayerNameException("The name cannot be null");
+    }
     if (name.isEmpty()) {
       throw new InvalidPlayerNameException("The name cannot be empty.");
     }
