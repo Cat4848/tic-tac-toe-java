@@ -22,7 +22,7 @@ public class StreamUserInputTests {
   }
 
   @Test
-  void ifReturnsPlayersNames() {
+  void ifReturnsPlayersNamesCorrectly() {
     String names = "Mike\nFrank\n";
     ByteArrayInputStream bais = new ByteArrayInputStream(names.getBytes());
     IUserInput userInput = new StreamUserInput(bais, logger);
