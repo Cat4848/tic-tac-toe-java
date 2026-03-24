@@ -35,7 +35,7 @@ public class StreamUserInputTests {
   }
 
   @Test
-  void ifItThrowsWhenPlayerNameIsEmptyString() {
+  void ifItValidatesInvalidPlayerName() {
     String names = "VeryLongNameOverTwentyCharactersLong\nRalph\nJohn\nLuke";
     ByteArrayInputStream bais = new ByteArrayInputStream(names.getBytes());
     ILogger mockedLogger = mock(ConsoleLogger.class);
