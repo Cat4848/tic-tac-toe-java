@@ -10,6 +10,7 @@ import BoardWinValidator.BoardWinValidator;
 public class Main {
   static void main(String[] args) {
     // TODO add dynamic board selectable by the user
+    // TODO catch errors so that the players can enter the correct value without ending the program
     int boardSize = 3;
 
     ILogger logger = new ConsoleLogger();

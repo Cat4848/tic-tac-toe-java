@@ -2,6 +2,7 @@ package PlayerInputValidator;
 
 import Exceptions.InvalidPlayerMoveException;
 import Exceptions.InvalidPlayerNameException;
+
 import java.util.regex.Pattern;
 
 public class PlayerInputValidator {
@@ -12,14 +13,10 @@ public class PlayerInputValidator {
   }
 
   public String validatePlayerName(String name) throws InvalidPlayerNameException {
-    if (name == null) {
-      throw new InvalidPlayerNameException("The name cannot be null");
-    }
-    if (name.isEmpty()) {
-      throw new InvalidPlayerNameException("The name cannot be empty.");
-    }
-    if (name.length() > 20) {
-      throw new InvalidPlayerNameException("The name is too long. Max 20 characters.");
+//    String regexp = "^\\w{3,20}$";
+    String regexp = "^[\\w|\\s]{3,20}$";
+    if (!Pattern.matches(regexp, name)) {
+      throw new InvalidPlayerNameException("Invalid player name. Cannot be empty and must have between 3 and 20 characters.");
     }
     return name;
   }
@@ -27,7 +24,7 @@ public class PlayerInputValidator {
   public String validatePlayerMove(String input) throws InvalidPlayerMoveException {
     String regexp = "^[1-" + boardSize + "]+,[1-" + boardSize + "]+$";
     if (!Pattern.matches(regexp, input)) {
-      throw new InvalidPlayerMoveException("Invalid player move.");
+      throw new InvalidPlayerMoveException("Invalid player move. Cannot be zero or out of board and must have comma between coordinates.");
     }
     return input;
   }

@@ -1,6 +1,7 @@
 package PlayerInputValidatorTests;
 
 import Exceptions.InvalidPlayerMoveException;
+import Exceptions.InvalidPlayerNameException;
 import PlayerInputValidator.PlayerInputValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,16 +10,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test suite for PlayerInputValidator class")
 public class PlayerInputValidatorTests {
-  String invalidPlayerExceptionMessage = "Invalid player move.";
+  String invalidPlayerMoveExceptionMessage = "Invalid player move. Cannot be zero or out of board and must have comma between coordinates.";
+  String invalidPlayerNameExceptionMessage = "Invalid player name. Cannot be empty and must have between 3 and 20 characters.";
 
   @Test
-  void ifReturnsPlayersNameCorrectly() {
+  void ifReturnsPlayersNameCorrectly() throws InvalidPlayerNameException {
     PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    String input = "Mike and Jill";
+    String name = playerInputValidator.validatePlayerName(input);
+    assertEquals(input, name);
   }
 
   @Test
-  void ifItValidatesInvalidPlayerName() {
+  void ifItThrowsErrorWhenPlayerNameIsEmptyString() throws InvalidPlayerNameException {
     PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    InvalidPlayerNameException exception = assertThrows(
+            InvalidPlayerNameException.class,
+            () -> playerInputValidator.validatePlayerName("")
+    );
+    assertEquals(invalidPlayerNameExceptionMessage, exception.getMessage());
+  }
+
+  @Test
+  void ifItThrowsErrorWhenPlayerNameIsLessThanThreeChars() throws InvalidPlayerNameException {
+    PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    InvalidPlayerNameException exception = assertThrows(
+            InvalidPlayerNameException.class,
+            () -> playerInputValidator.validatePlayerName("Mi")
+    );
+    assertEquals(invalidPlayerNameExceptionMessage, exception.getMessage());
+  }
+
+  @Test
+  void ifItThrowsErrorWhenPlayerNameIsMoreThanTwentyChars() throws InvalidPlayerNameException {
+    PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    String playerName = "A very long name for this player.";
+    InvalidPlayerNameException exception = assertThrows(
+            InvalidPlayerNameException.class,
+            () -> playerInputValidator.validatePlayerName(playerName)
+    );
+    assertEquals(invalidPlayerNameExceptionMessage, exception.getMessage());
   }
 
   @Test
@@ -36,7 +67,7 @@ public class PlayerInputValidatorTests {
             InvalidPlayerMoveException.class,
             () -> playerInputValidator.validatePlayerMove("11")
     );
-    assertEquals(invalidPlayerExceptionMessage, exception.getMessage());
+    assertEquals(invalidPlayerMoveExceptionMessage, exception.getMessage());
   }
 
   @Test
@@ -46,7 +77,7 @@ public class PlayerInputValidatorTests {
             InvalidPlayerMoveException.class,
             () -> playerInputValidator.validatePlayerMove("0,1")
     );
-    assertEquals(invalidPlayerExceptionMessage, exception.getMessage());
+    assertEquals(invalidPlayerMoveExceptionMessage, exception.getMessage());
   }
 
   @Test
@@ -56,6 +87,6 @@ public class PlayerInputValidatorTests {
             InvalidPlayerMoveException.class,
             () -> playerInputValidator.validatePlayerMove("1,5")
     );
-    assertEquals(invalidPlayerExceptionMessage, exception.getMessage());
+    assertEquals(invalidPlayerMoveExceptionMessage, exception.getMessage());
   }
 }
