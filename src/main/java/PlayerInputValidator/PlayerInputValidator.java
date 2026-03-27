@@ -1,6 +1,8 @@
 package PlayerInputValidator;
 
+import Exceptions.InvalidPlayerMoveException;
 import Exceptions.InvalidPlayerNameException;
+import java.util.regex.Pattern;
 
 public class PlayerInputValidator {
   final int boardSize;
@@ -20,5 +22,12 @@ public class PlayerInputValidator {
       throw new InvalidPlayerNameException("The name is too long. Max 20 characters.");
     }
     return name;
+  }
+
+  public String validatePlayerMove(String input) throws InvalidPlayerMoveException {
+    if (!Pattern.matches("^\\d+,\\d+$", input)) {
+      throw new InvalidPlayerMoveException("Invalid player move.");
+    }
+    return input;
   }
 }
