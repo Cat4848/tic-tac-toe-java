@@ -1,23 +1,16 @@
 package PlayerInputValidatorTests;
 
 import Exceptions.InvalidPlayerMoveException;
-import Logger.ConsoleLogger;
-import Logger.ILogger;
 import PlayerInputValidator.PlayerInputValidator;
-import UserInput.IUserInput;
-import UserInput.StreamUserInput;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @DisplayName("Test suite for PlayerInputValidator class")
 public class PlayerInputValidatorTests {
+  String invalidPlayerExceptionMessage = "Invalid player move.";
+
   @Test
   void ifReturnsPlayersNameCorrectly() {
     PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
@@ -29,9 +22,13 @@ public class PlayerInputValidatorTests {
   }
 
   @Test
-  void ifReturnsThePlayerMoveCorrectly() {
+  void ifPlayerMoveValidationSucceeds() throws InvalidPlayerMoveException {
     PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    String input = "1,1";
+    String move = playerInputValidator.validatePlayerMove(input);
+    assertEquals(input, move);
   }
+
   @Test
   void ifItThrowsErrorWhenInvalidMoveIsProvided() throws InvalidPlayerMoveException {
     PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
@@ -39,6 +36,26 @@ public class PlayerInputValidatorTests {
             InvalidPlayerMoveException.class,
             () -> playerInputValidator.validatePlayerMove("11")
     );
-    assertEquals("Invalid player move.", exception.getMessage());
+    assertEquals(invalidPlayerExceptionMessage, exception.getMessage());
+  }
+
+  @Test
+  void ifItThrowsErrorWhenMoveWithValueZeroIsProvided() throws InvalidPlayerMoveException {
+    PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    InvalidPlayerMoveException exception = assertThrows(
+            InvalidPlayerMoveException.class,
+            () -> playerInputValidator.validatePlayerMove("0,1")
+    );
+    assertEquals(invalidPlayerExceptionMessage, exception.getMessage());
+  }
+
+  @Test
+  void ifItThrowsErrorWhenMoveIsOutBoard() throws InvalidPlayerMoveException {
+    PlayerInputValidator playerInputValidator = new PlayerInputValidator(3);
+    InvalidPlayerMoveException exception = assertThrows(
+            InvalidPlayerMoveException.class,
+            () -> playerInputValidator.validatePlayerMove("1,5")
+    );
+    assertEquals(invalidPlayerExceptionMessage, exception.getMessage());
   }
 }

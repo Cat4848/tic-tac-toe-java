@@ -25,7 +25,8 @@ public class PlayerInputValidator {
   }
 
   public String validatePlayerMove(String input) throws InvalidPlayerMoveException {
-    if (!Pattern.matches("^\\d+,\\d+$", input)) {
+    String regexp = "^[1-" + boardSize + "]+,[1-" + boardSize + "]+$";
+    if (!Pattern.matches(regexp, input)) {
       throw new InvalidPlayerMoveException("Invalid player move.");
     }
     return input;
